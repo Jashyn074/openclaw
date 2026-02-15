@@ -85,7 +85,6 @@ export async function assertSandboxPathInRoots(params: {
     });
   }
 
-  let lastErr: unknown = undefined;
   for (const root of roots) {
     try {
       return await assertSandboxPath({
@@ -94,8 +93,8 @@ export async function assertSandboxPathInRoots(params: {
         root,
         allowFinalSymlink: params.allowFinalSymlink,
       });
-    } catch (err) {
-      lastErr = err;
+    } catch {
+      // Keep trying other roots.
     }
   }
 
