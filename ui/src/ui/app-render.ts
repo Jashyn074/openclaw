@@ -65,6 +65,7 @@ import { renderGatewayUrlConfirmation } from "./views/gateway-url-confirmation.t
 import { renderInstances } from "./views/instances.ts";
 import { renderLogs } from "./views/logs.ts";
 import { renderNodes } from "./views/nodes.ts";
+import { renderOps } from "./views/ops.ts";
 import { renderOverview } from "./views/overview.ts";
 import { renderSessions } from "./views/sessions.ts";
 import { renderSkills } from "./views/skills.ts";
@@ -227,6 +228,53 @@ export function renderApp(state: AppViewState) {
                 },
                 onConnect: () => state.connect(),
                 onRefresh: () => state.loadOverview(),
+              })
+            : nothing
+        }
+
+        ${
+          state.tab === "ops"
+            ? renderOps({
+                connected: state.connected,
+                helloUptimeMs: state.hello?.uptimeMs ?? null,
+                agentsList: state.agentsList,
+                selectedAgentId: resolvedAgentId,
+                agentIdentityById: state.agentIdentityById,
+                agentSkillsCount: state.agentSkillsReport?.skills?.length ?? 0,
+                chatQueue: state.chatQueue,
+                execApprovalQueue: state.execApprovalQueue,
+                eventLog: state.eventLog,
+                logsEntries: state.logsEntries,
+                chatMessages: state.chatMessages,
+                chatToolMessages: state.chatToolMessages,
+                agentFilesList: state.agentFilesList,
+                agentFileContents: state.agentFileContents,
+                healthSnapshot: state.debugHealth,
+                throughputPerMinute: state.eventLog.filter(
+                  (entry) => Date.now() - entry.ts <= 60_000,
+                ).length,
+                filters: {
+                  agent: state.opsFilterAgent,
+                  status: state.opsFilterStatus,
+                  priority: state.opsFilterPriority,
+                  windowMinutes: state.opsFilterWindowMinutes,
+                },
+                onFilterChange: (name, value) => {
+                  if (name === "agent") {
+                    state.opsFilterAgent = value;
+                    return;
+                  }
+                  if (name === "status") {
+                    state.opsFilterStatus = value;
+                    return;
+                  }
+                  if (name === "priority") {
+                    state.opsFilterPriority = value;
+                    return;
+                  }
+                  const parsed = Number(value);
+                  state.opsFilterWindowMinutes = Number.isFinite(parsed) ? parsed : 60;
+                },
               })
             : nothing
         }

@@ -24,6 +24,7 @@ export const en: TranslationMap = {
   tabs: {
     agents: "Agents",
     overview: "Overview",
+    ops: "Operations",
     channels: "Channels",
     instances: "Instances",
     sessions: "Sessions",
@@ -39,6 +40,7 @@ export const en: TranslationMap = {
   subtitles: {
     agents: "Manage agent workspaces, tools, and identities.",
     overview: "Gateway status, entry points, and a fast health read.",
+    ops: "Operations cockpit for agents, tasks, artifacts, and realtime streams.",
     channels: "Manage channels and settings.",
     instances: "Presence beacons from connected clients and nodes.",
     sessions: "Inspect active sessions and adjust per-session defaults.",
@@ -106,6 +108,57 @@ export const en: TranslationMap = {
     thinkingToggle: "Toggle assistant thinking/working output",
     focusToggle: "Toggle focus mode (hide sidebar + page header)",
     onboardingDisabled: "Disabled during onboarding",
+  },
+  ops: {
+    common: {
+      noData: "No data yet",
+    },
+    home: {
+      title: "Home overview",
+      subtitle: "Active agents, failing runs, queue depth, and throughput.",
+      activeAgents: "Active agents",
+      failingRuns: "Failing runs",
+      queues: "Queues",
+      throughput: "Throughput",
+    },
+    agentDetail: {
+      title: "Agent detail",
+      name: "Name",
+      capabilities: "Capabilities",
+      subagents: "Active subagents",
+      health: "Health",
+      lastActions: "Latest actions",
+    },
+    tasks: {
+      title: "Task board",
+      subtitle: "Kanban board with filters for agent, status, priority, and time.",
+      filters: {
+        agent: "Agent",
+        status: "Status",
+        priority: "Priority",
+        time: "Time",
+      },
+    },
+    artifacts: {
+      title: "Artifact library",
+      subtitle: "Generated code, docs, and files with inline preview and download actions.",
+    },
+    chat: {
+      title: "Agent chat panel",
+      subtitle: "Per-agent context with message history and tool-use summaries.",
+      sessionContext: "Context",
+      messages: "Messages",
+      toolSummary: "Tool-use summary",
+    },
+    realtime: {
+      title: "Realtime status",
+      subtitle: "WebSocket/SSE style streaming for status updates and logs.",
+      wsConnected: "WebSocket connected",
+      wsDisconnected: "WebSocket disconnected",
+      uptime: "Gateway uptime",
+      streamedEvents: "Streamed events",
+      logLines: "Log stream lines",
+    },
   },
   languages: {
     en: "English",

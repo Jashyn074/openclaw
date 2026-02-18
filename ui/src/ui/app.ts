@@ -228,6 +228,11 @@ export class OpenClawApp extends LitElement {
   @state() agentSkillsReport: SkillStatusReport | null = null;
   @state() agentSkillsAgentId: string | null = null;
 
+  @state() opsFilterAgent = "all";
+  @state() opsFilterStatus = "all";
+  @state() opsFilterPriority = "all";
+  @state() opsFilterWindowMinutes = 60;
+
   @state() sessionsLoading = false;
   @state() sessionsResult: SessionsListResult | null = null;
   @state() sessionsError: string | null = null;
