@@ -4,6 +4,7 @@ type OperationsHomeRefs = {
   healthBanner: HTMLElement;
   statusMessage: HTMLElement;
   loadingState: HTMLElement;
+  disconnectedState: HTMLElement;
   errorState: HTMLElement;
   emptyState: HTMLElement;
   kpiConnection: HTMLElement;
@@ -18,6 +19,8 @@ type OperationsHomeRefs = {
   trainingRetrainJobs: HTMLElement;
   trainingRegistry: HTMLElement;
 };
+
+type DashboardStatePanel = "loading" | "disconnected" | "empty" | "ready";
 
 export type OperationsHomeController = {
   render: (state: OperationsProjectionState) => void;
@@ -47,6 +50,7 @@ export function createOperationsHomeController(): OperationsHomeController {
     healthBanner: requireNode("healthBanner"),
     statusMessage: requireNode("statusMessage"),
     loadingState: requireNode("loadingState"),
+    disconnectedState: requireNode("disconnectedState"),
     errorState: requireNode("errorState"),
     emptyState: requireNode("emptyState"),
     kpiConnection: requireNode("kpiConnection"),
@@ -81,8 +85,20 @@ export function createOperationsHomeController(): OperationsHomeController {
             : "Gateway disconnected";
 
       const hasEvents = state.lastUpdatedAt !== null;
-      refs.loadingState.hidden = hasEvents;
-      refs.emptyState.hidden = state.activityFeed.length > 0;
+      const hasActivity = state.activityFeed.length > 0;
+      const showDisconnected = state.gatewayHealth.connectionState === "disconnected";
+
+      const dashboardState: DashboardStatePanel = !hasEvents
+        ? "loading"
+        : showDisconnected
+          ? "disconnected"
+          : hasActivity
+            ? "ready"
+            : "empty";
+
+      refs.loadingState.hidden = dashboardState !== "loading";
+      refs.disconnectedState.hidden = dashboardState !== "disconnected";
+      refs.emptyState.hidden = dashboardState !== "empty";
 
       refs.kpiConnection.textContent = state.gatewayHealth.connectionState;
       refs.kpiQueueDepth.textContent = String(state.runQueue.queueDepth);
@@ -91,16 +107,22 @@ export function createOperationsHomeController(): OperationsHomeController {
       refs.kpiUptime.textContent = toDuration(state.gatewayHealth.uptimeSeconds);
       refs.kpiActiveAgents.textContent = String(state.agentActivity.activeAgents);
 
-      if (state.activityFeed.length === 0) {
-        refs.activityFeed.innerHTML = "";
-      } else {
-        refs.activityFeed.innerHTML = state.activityFeed
-          .map((item) => {
-            const time = new Date(item.at).toLocaleTimeString();
-            return `<li class="feed-item" data-level="${item.level}"><span>${time}</span><p>${item.summary}</p></li>`;
-          })
-          .join("");
-      }
+      const feedItems = state.activityFeed.map((item) => {
+        const row = document.createElement("li");
+        row.className = "feed-item";
+        row.dataset.level = item.level;
+
+        const time = document.createElement("time");
+        time.dateTime = new Date(item.at).toISOString();
+        time.textContent = new Date(item.at).toLocaleTimeString();
+
+        const summary = document.createElement("p");
+        summary.textContent = item.summary;
+
+        row.append(time, summary);
+        return row;
+      });
+      refs.activityFeed.replaceChildren(...feedItems);
 
       refs.trainingDatasetQueue.textContent = String(state.training.datasetQueueDepth);
       refs.trainingEvalRuns.textContent = String(state.training.evaluationRuns.length);
