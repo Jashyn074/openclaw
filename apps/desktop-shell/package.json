@@ -1,0 +1,33 @@
+{
+  "name": "@openclaw/desktop-shell",
+  "private": true,
+  "version": "0.0.1",
+  "description": "OpenClaw desktop control shell",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "dev": "pnpm build && electron dist/main.js",
+    "dist": "pnpm build && electron-builder"
+  },
+  "dependencies": {
+    "electron": "^31.7.7"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.7.2"
+  },
+  "build": {
+    "appId": "ai.openclaw.desktop",
+    "productName": "OpenClaw Desktop",
+    "files": [
+      "dist/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
