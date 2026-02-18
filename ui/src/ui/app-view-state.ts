@@ -142,6 +142,10 @@ export type AppViewState = {
   agentSkillsError: string | null;
   agentSkillsReport: SkillStatusReport | null;
   agentSkillsAgentId: string | null;
+  opsFilterAgent: string;
+  opsFilterStatus: string;
+  opsFilterPriority: string;
+  opsFilterWindowMinutes: number;
   sessionsLoading: boolean;
   sessionsResult: SessionsListResult | null;
   sessionsError: string | null;
