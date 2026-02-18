@@ -21,11 +21,12 @@
       <section class="gateway-panel">
         <p class="gateway-label">Gateway target</p>
         <code id="gatewayUrl"></code>
-        <p id="statusMessage" class="status-message">Preparing gateway stream…</p>
-        <p id="errorState" class="error-message" hidden></p>
+        <p id="statusMessage" class="status-message" role="status" aria-live="polite">Preparing gateway stream…</p>
+        <p id="errorState" class="error-message" role="alert" aria-live="assertive" hidden></p>
       </section>
 
       <section id="loadingState" class="state-panel">Loading native dashboard projections…</section>
+      <section id="disconnectedState" class="state-panel" hidden>Gateway disconnected. Reconnect to resume live operations updates.</section>
       <section id="emptyState" class="state-panel" hidden>No activity yet. Waiting for gateway events.</section>
 
       <section class="dashboard-grid" aria-label="Operations overview">
@@ -57,7 +58,7 @@
 
       <section class="panel" aria-label="Recent activity">
         <h2>Activity feed</h2>
-        <ul id="activityFeed" class="feed-list"></ul>
+        <ul id="activityFeed" class="feed-list" aria-live="polite" aria-label="Recent gateway activity"></ul>
       </section>
 
       <section class="panel" aria-label="Training orchestration">
