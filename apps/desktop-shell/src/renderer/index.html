@@ -11,21 +11,83 @@
       <header class="topbar">
         <div>
           <p class="eyebrow">OpenClaw Desktop</p>
-          <h1>Agent Operations Shell</h1>
+          <h1>Operations Home</h1>
         </div>
-        <button id="reloadButton" type="button">Reload gateway</button>
+        <button id="reloadButton" type="button">Reconnect gateway</button>
       </header>
+
+      <section id="healthBanner" class="health-banner" data-state="disconnected">Gateway disconnected</section>
 
       <section class="gateway-panel">
         <p class="gateway-label">Gateway target</p>
         <code id="gatewayUrl"></code>
+        <p id="statusMessage" class="status-message">Preparing gateway stream…</p>
+        <p id="errorState" class="error-message" hidden></p>
       </section>
 
-      <section class="workspace" aria-label="OpenClaw workspace">
+      <section id="loadingState" class="state-panel">Loading native dashboard projections…</section>
+      <section id="emptyState" class="state-panel" hidden>No activity yet. Waiting for gateway events.</section>
+
+      <section class="dashboard-grid" aria-label="Operations overview">
+        <article class="card">
+          <h2>Connection</h2>
+          <p id="kpiConnection">connecting</p>
+        </article>
+        <article class="card">
+          <h2>Queue depth</h2>
+          <p id="kpiQueueDepth">0</p>
+        </article>
+        <article class="card">
+          <h2>Active runs</h2>
+          <p id="kpiActiveRuns">0</p>
+        </article>
+        <article class="card">
+          <h2>Failures (1h)</h2>
+          <p id="kpiFailures">0</p>
+        </article>
+        <article class="card">
+          <h2>Uptime</h2>
+          <p id="kpiUptime">0h 0m 0s</p>
+        </article>
+        <article class="card">
+          <h2>Active agents</h2>
+          <p id="kpiActiveAgents">0</p>
+        </article>
+      </section>
+
+      <section class="panel" aria-label="Recent activity">
+        <h2>Activity feed</h2>
+        <ul id="activityFeed" class="feed-list"></ul>
+      </section>
+
+      <section class="panel" aria-label="Training orchestration">
+        <h2>Training orchestration (external workers)</h2>
+        <div class="training-grid">
+          <div>
+            <h3>Dataset curation queue</h3>
+            <p id="trainingDatasetQueue">0</p>
+          </div>
+          <div>
+            <h3>Evaluation run records</h3>
+            <p id="trainingEvalRuns">0</p>
+          </div>
+          <div>
+            <h3>Retrain trigger jobs</h3>
+            <p id="trainingRetrainJobs">0</p>
+          </div>
+          <div>
+            <h3>Model registry records</h3>
+            <p id="trainingRegistry">0</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="OpenClaw workspace fallback">
+        <h2>Gateway workspace fallback</h2>
         <iframe id="gatewayFrame" title="OpenClaw Gateway" referrerpolicy="no-referrer"></iframe>
       </section>
     </main>
 
-    <script src="./renderer.js" defer></script>
+    <script type="module" src="./renderer.js"></script>
   </body>
 </html>
