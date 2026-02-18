@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenClaw Desktop</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OpenClaw Desktop</p>
+          <h1>Agent Operations Shell</h1>
+        </div>
+        <button id="reloadButton" type="button">Reload gateway</button>
+      </header>
+
+      <section class="gateway-panel">
+        <p class="gateway-label">Gateway target</p>
+        <code id="gatewayUrl"></code>
+      </section>
+
+      <section class="workspace" aria-label="OpenClaw workspace">
+        <iframe id="gatewayFrame" title="OpenClaw Gateway" referrerpolicy="no-referrer"></iframe>
+      </section>
+    </main>
+
+    <script src="./renderer.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "name": "@openclaw/desktop-shell",
+  "private": true,
+  "version": "0.0.1",
+  "description": "OpenClaw desktop control shell",
+  "main": "dist/main.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && pnpm copy:renderer",
+    "clean": "rm -rf dist",
+    "copy:renderer": "node -e \"const fs=require('node:fs');fs.rmSync('dist/renderer',{recursive:true,force:true});fs.cpSync('src/renderer','dist/renderer',{recursive:true});\"",
+    "dev": "pnpm build && electron dist/main.js",
+    "dist": "pnpm build && electron-builder"
+  },
+  "dependencies": {
+    "electron": "^31.7.7"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.7.2"
+  },
+  "build": {
+    "appId": "ai.openclaw.desktop",
+    "productName": "OpenClaw Desktop",
+    "files": [
+      "dist/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
