@@ -53,4 +53,71 @@ describe("operations projections", () => {
     expect(swapped.agentActivity.idleAgents).toBe(0);
     expect(swapped.agentActivity.byAgent.a2).toBe("active");
   });
+
+  it("projects typed training lifecycle records", () => {
+    const initial = createInitialOperationsState();
+
+    const datasetRecorded = applyGatewayEvent(
+      initial,
+      {
+        type: "training.dataset.recorded",
+        datasetId: "ds-1",
+        status: "queued",
+        itemCount: 120,
+        owner: "ml-ops",
+      },
+      1_000,
+    );
+    const datasetTransitioned = applyGatewayEvent(
+      datasetRecorded,
+      {
+        type: "training.dataset.transitioned",
+        datasetId: "ds-1",
+        status: "validated",
+      },
+      2_000,
+    );
+    const evaluation = applyGatewayEvent(
+      datasetTransitioned,
+      {
+        type: "training.evaluation.recorded",
+        evaluationId: "eval-1",
+        modelId: "model-a",
+        datasetId: "ds-1",
+        status: "running",
+      },
+      3_000,
+    );
+    const retrain = applyGatewayEvent(
+      evaluation,
+      {
+        type: "training.retrain.recorded",
+        jobId: "job-1",
+        modelId: "model-a",
+        trigger: "schedule",
+        status: "queued",
+      },
+      4_000,
+    );
+    const registry = applyGatewayEvent(
+      retrain,
+      {
+        type: "training.registry.recorded",
+        modelId: "model-a",
+        status: "candidate",
+        datasetId: "ds-1",
+        datasetHash: "hash-1",
+        baseModel: "llama",
+        adapterId: "adapter-a",
+      },
+      5_000,
+    );
+
+    expect(registry.training.datasetCuration[0]?.status).toBe("validated");
+    expect(registry.training.datasetQueueDepth).toBe(0);
+    expect(registry.training.evaluationRuns[0]?.evaluationId).toBe("eval-1");
+    expect(registry.training.retrainJobs[0]?.jobId).toBe("job-1");
+    expect(registry.training.modelRegistry[0]?.modelId).toBe("model-a");
+  });
+
 });

@@ -1,3 +1,5 @@
+import type { DatasetCurationStatus, EvaluationRunStatus, ModelRegistryStatus, RetrainJobStatus } from "../store/training-models.js";
+
 export type GatewayConnectionState = "connecting" | "connected" | "disconnected" | "degraded";
 
 export type GatewayEvent =
@@ -10,6 +12,14 @@ export type GatewayEvent =
   | { type: "run.finished"; runId: string; agentId: string }
   | { type: "run.failed"; runId: string; agentId: string; reason: string }
   | { type: "agent.activity"; agentId: string; status: "active" | "idle" }
+  | { type: "training.dataset.recorded"; datasetId: string; status: DatasetCurationStatus; itemCount: number; owner: string; notes?: string }
+  | { type: "training.dataset.transitioned"; datasetId: string; status: DatasetCurationStatus; notes?: string }
+  | { type: "training.evaluation.recorded"; evaluationId: string; modelId: string; datasetId: string; status: EvaluationRunStatus; score?: number }
+  | { type: "training.evaluation.transitioned"; evaluationId: string; status: EvaluationRunStatus; score?: number }
+  | { type: "training.retrain.recorded"; jobId: string; trigger: string; modelId: string; status: RetrainJobStatus }
+  | { type: "training.retrain.transitioned"; jobId: string; status: RetrainJobStatus }
+  | { type: "training.registry.recorded"; modelId: string; status: ModelRegistryStatus; datasetId: string; datasetHash: string; baseModel: string; adapterId: string; evalScore?: number; rollbackPointer?: string }
+  | { type: "training.registry.transitioned"; modelId: string; status: ModelRegistryStatus; evalScore?: number; rollbackPointer?: string }
   | { type: "system.notice"; level: "info" | "warning" | "error"; message: string };
 
 export type GatewayAdapterStatus = {

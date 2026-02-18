@@ -18,6 +18,10 @@ type OperationsHomeRefs = {
   trainingEvalRuns: HTMLElement;
   trainingRetrainJobs: HTMLElement;
   trainingRegistry: HTMLElement;
+  datasetRecords: HTMLElement;
+  evaluationRecords: HTMLElement;
+  retrainRecords: HTMLElement;
+  registryRecords: HTMLElement;
 };
 
 type DashboardStatePanel = "loading" | "disconnected" | "empty" | "ready";
@@ -45,6 +49,15 @@ function toDuration(uptimeSeconds: number): string {
   return `${hours}h ${minutes}m ${seconds}s`;
 }
 
+function renderRecordList(container: HTMLElement, rows: string[]): void {
+  if (rows.length === 0) {
+    container.innerHTML = '<li class="record-empty">No records yet.</li>';
+    return;
+  }
+
+  container.innerHTML = rows.map((row) => `<li>${row}</li>`).join("");
+}
+
 export function createOperationsHomeController(): OperationsHomeController {
   const refs: OperationsHomeRefs = {
     healthBanner: requireNode("healthBanner"),
@@ -64,6 +77,10 @@ export function createOperationsHomeController(): OperationsHomeController {
     trainingEvalRuns: requireNode("trainingEvalRuns"),
     trainingRetrainJobs: requireNode("trainingRetrainJobs"),
     trainingRegistry: requireNode("trainingRegistry"),
+    datasetRecords: requireNode("datasetRecords"),
+    evaluationRecords: requireNode("evaluationRecords"),
+    retrainRecords: requireNode("retrainRecords"),
+    registryRecords: requireNode("registryRecords"),
   };
 
   return {
@@ -128,6 +145,29 @@ export function createOperationsHomeController(): OperationsHomeController {
       refs.trainingEvalRuns.textContent = String(state.training.evaluationRuns.length);
       refs.trainingRetrainJobs.textContent = String(state.training.retrainJobs.length);
       refs.trainingRegistry.textContent = String(state.training.modelRegistry.length);
+
+      renderRecordList(
+        refs.datasetRecords,
+        state.training.datasetCuration.map(
+          (record) => `${record.datasetId} · ${record.status} · ${record.itemCount} items · ${record.owner}`,
+        ),
+      );
+      renderRecordList(
+        refs.evaluationRecords,
+        state.training.evaluationRuns.map(
+          (record) => `${record.evaluationId} · ${record.status} · ${record.modelId} · score ${record.score ?? "-"}`,
+        ),
+      );
+      renderRecordList(
+        refs.retrainRecords,
+        state.training.retrainJobs.map((record) => `${record.jobId} · ${record.status} · ${record.trigger}`),
+      );
+      renderRecordList(
+        refs.registryRecords,
+        state.training.modelRegistry.map(
+          (record) => `${record.modelId} · ${record.status} · ${record.baseModel} · ${record.evalScore ?? "-"}`,
+        ),
+      );
     },
   };
 }

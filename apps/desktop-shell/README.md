@@ -16,7 +16,7 @@ Implemented module boundaries:
     - run queue counters
     - agent activity summary
     - activity feed
-    - training orchestration metadata placeholders
+    - typed training orchestration records (dataset curation, evaluation runs, retrain jobs, model registry entries)
 - `src/renderer/modules/*`
   - Native Operations Home renderer with explicit loading/empty/error states.
 
@@ -27,14 +27,14 @@ Implemented module boundaries:
 
 ## Training orchestration strategy hooks (external training only)
 
-This shell intentionally does **not** run local GPU training. It now includes first-class projection placeholders and UI counters for:
+This shell intentionally does **not** run local GPU training. It now includes typed projection records, lifecycle transitions, and compact native record lists for:
 
 - dataset curation queue
 - evaluation run records
 - retrain trigger jobs
 - model registry metadata (dataset hash, base model, adapter id, eval score, rollback pointer)
 
-Training execution remains external (Axolotl / Unsloth / custom pipeline).
+Training execution remains external (Axolotl / Unsloth / custom pipeline). The desktop shell only projects and visualizes lifecycle metadata; it does not execute training workloads.
 
 ## Run (development)
 
