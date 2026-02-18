@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenClaw Desktop</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OpenClaw Desktop</p>
+          <h1>Agent Operations Shell</h1>
+        </div>
+        <div class="topbar-actions">
+          <button id="reloadButton" type="button">Reload gateway view</button>
+          <button id="reconnectGateway" type="button">Reconnect gateway socket</button>
+        </div>
+      </header>
+
+      <section class="kpi-grid" aria-label="Operations telemetry cards">
+        <article class="kpi-card">
+          <p class="gateway-label">Connection</p>
+          <p id="kpiConnection" class="kpi-value">idle</p>
+        </article>
+        <article class="kpi-card">
+          <p class="gateway-label">Reconnects</p>
+          <p id="kpiReconnects" class="kpi-value">0</p>
+        </article>
+        <article class="kpi-card">
+          <p class="gateway-label">Messages observed</p>
+          <p id="kpiMessages" class="kpi-value">0</p>
+        </article>
+        <article class="kpi-card">
+          <p class="gateway-label">Uptime</p>
+          <p id="kpiUptime" class="kpi-value">0s</p>
+        </article>
+      </section>
+
+      <section class="gateway-panel">
+        <p class="gateway-label">Gateway target</p>
+        <code id="gatewayUrl"></code>
+      </section>
+
+      <section class="gateway-panel">
+        <p class="gateway-label">Gateway socket status</p>
+        <p id="gatewayConnectionStatus" class="status-text">state=idle</p>
+      </section>
+
+      <section class="workspace" aria-label="OpenClaw workspace">
+        <iframe id="gatewayFrame" title="OpenClaw Gateway" referrerpolicy="no-referrer"></iframe>
+      </section>
+    </main>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
