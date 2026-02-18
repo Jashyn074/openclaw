@@ -8,16 +8,18 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && pnpm copy:renderer",
     "clean": "rm -rf dist",
-    "copy:renderer": "node -e \"const fs=require('node:fs');fs.rmSync('dist/renderer',{recursive:true,force:true});fs.cpSync('src/renderer','dist/renderer',{recursive:true});\"",
+    "copy:renderer": "node -e \"const fs=require('node:fs');fs.mkdirSync('dist/renderer',{recursive:true});for (const file of ['index.html','styles.css']) fs.copyFileSync('src/renderer/'+file,'dist/renderer/'+file);\"",
     "dev": "pnpm build && electron dist/main.js",
-    "dist": "pnpm build && electron-builder"
+    "dist": "pnpm build && electron-builder",
+    "test": "vitest run src/renderer/store/projections.test.ts"
   },
   "dependencies": {
     "electron": "^31.7.7"
   },
   "devDependencies": {
     "electron-builder": "^24.13.3",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   },
   "build": {
     "appId": "ai.openclaw.desktop",
