@@ -205,3 +205,17 @@ All approvals and overrides must produce immutable audit events.
 - zero untracked privileged actions
 - responsive UI under 10k plus timeline events per session
 - operator task completion speed higher than browser control workflow
+
+## Implementation status
+
+Completed in current implementation:
+
+- desktop preload bridge baseline (`src/preload.ts`)
+- desktop native shell route (`src/renderer/index.html`)
+- gateway embedding workspace with top level shell controls (`src/renderer/renderer.js`)
+
+Next coding slice:
+
+- replace iframe embedding with a native React operator app that consumes gateway events directly
+- add typed gateway connection service with reconnect and backpressure handling
+- introduce first event projection store for health and queue metrics

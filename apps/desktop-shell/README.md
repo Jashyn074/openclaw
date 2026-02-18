@@ -5,10 +5,12 @@ This app is the first step toward a standalone desktop control app (including Wi
 ## What this starter does
 
 - Creates a native desktop window via Electron.
-- Loads the OpenClaw Gateway Control UI URL (default: `http://127.0.0.1:18789/`).
+- Loads an OpenClaw desktop shell page (instead of opening the Gateway URL directly).
+- Embeds the OpenClaw Gateway inside an application workspace frame.
+- Shows the active Gateway target and supports quick reload from the top bar.
 - Allows overriding the gateway URL with `OPENCLAW_GATEWAY_URL`.
 - Applies hardened browser defaults (`contextIsolation`, `sandbox`, no Node integration).
-- Shows a clear error dialog when the configured Gateway URL cannot be loaded.
+- Shows a clear error dialog when the desktop shell cannot be loaded.
 
 ## Run (development)
 

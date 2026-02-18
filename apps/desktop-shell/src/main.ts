@@ -1,6 +1,11 @@
 import { app, BrowserWindow, dialog } from "electron";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
 const defaultGatewayUrl = "http://127.0.0.1:18789/";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function normalizeGatewayUrl(value: string): string {
   const candidate = value.trim();
@@ -45,18 +50,25 @@ async function createMainWindow(): Promise<BrowserWindow> {
       sandbox: true,
       nodeIntegration: false,
       webSecurity: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
   const gatewayUrl = resolveGatewayUrl();
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+
   try {
-    await mainWindow.loadURL(gatewayUrl);
+    await mainWindow.loadFile(path.join(__dirname, "renderer/index.html"), {
+      query: {
+        gatewayUrl,
+      },
+    });
   } catch (error) {
     await dialog.showMessageBox(mainWindow, {
       type: "error",
       title: "OpenClaw Desktop",
-      message: "Kon de OpenClaw Gateway niet laden.",
-      detail: `Probeer of de gateway draait op ${gatewayUrl}.\n\n${String(error)}`,
+      message: "Kon de OpenClaw Desktop shell niet laden.",
+      detail: `${String(error)}`,
     });
   }
 
