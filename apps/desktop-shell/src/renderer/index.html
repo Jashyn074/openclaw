@@ -61,7 +61,8 @@
       </section>
 
       <section class="panel" aria-label="Training orchestration">
-        <h2>Training orchestration (external workers)</h2>
+        <h2>Training orchestration records (external execution)</h2>
+        <p class="panel-note">Execution stays external to this shell; these are projected lifecycle records only.</p>
         <div class="training-grid">
           <div>
             <h3>Dataset curation queue</h3>
@@ -78,6 +79,24 @@
           <div>
             <h3>Model registry records</h3>
             <p id="trainingRegistry">0</p>
+          </div>
+        </div>
+              <div class="training-records-grid">
+          <div>
+            <h3>Dataset curation records</h3>
+            <ul id="datasetRecords" class="record-list"></ul>
+          </div>
+          <div>
+            <h3>Evaluation run records</h3>
+            <ul id="evaluationRecords" class="record-list"></ul>
+          </div>
+          <div>
+            <h3>Retrain jobs</h3>
+            <ul id="retrainRecords" class="record-list"></ul>
+          </div>
+          <div>
+            <h3>Model registry entries</h3>
+            <ul id="registryRecords" class="record-list"></ul>
           </div>
         </div>
       </section>
